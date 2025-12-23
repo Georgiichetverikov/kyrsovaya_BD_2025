@@ -1,13 +1,13 @@
 from pathlib import Path
 from .config import SECRET_KEY, DEBUG, DATABASES
-import os
 import dj_database_url
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-!mv1$(1ynsh*ao^#!1k477u5#o82m(#l1hj4wprw*nk2u3&25-'
 DEBUG = True
-ALLOWED_HOSTS = ['kyrsovaya-bd-2025.onrender.com']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,6 +48,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rental_platform.wsgi.application'
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'rental_db',
+        'USER': 'postgres',
+        'PASSWORD': '1235789Cg',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 if os.getenv('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
