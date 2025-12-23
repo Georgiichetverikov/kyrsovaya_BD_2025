@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-!mv1$(1ynsh*ao^#!1k477u5#o82m(#l1hj4wprw*nk2u3&25-'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['kyrsovaya-bd-2025.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -54,16 +54,25 @@ WSGI_APPLICATION = 'rental_platform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+<<<<<<< HEAD
         'NAME': 'rental_db',
         'USER': 'postgres',
         'PASSWORD': '1235789Cg',
         'HOST': 'localhost',
         'PORT': '5432',
+=======
+        'NAME': os.getenv('DB_NAME', 'rental_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '1235789Cg'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+>>>>>>> a5b1bbcb3bdef4284f13d9b7ca9129056d48e402
     }
 }
 
 if os.getenv('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
+<<<<<<< HEAD
 
 DATABASES = {
     'default': {
@@ -75,6 +84,9 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+=======
+    
+>>>>>>> a5b1bbcb3bdef4284f13d9b7ca9129056d48e402
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 AUTH_PASSWORD_VALIDATORS = [
