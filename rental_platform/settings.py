@@ -1,6 +1,6 @@
 from pathlib import Path
 from .config import SECRET_KEY, DEBUG, DATABASES
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-!mv1$(1ynsh*ao^#!1k477u5#o82m(#l1hj4wprw*nk2u3&25-'
