@@ -49,22 +49,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rental_platform.wsgi.application'
 
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rental_db',
-        'USER': 'postgres',
-        'PASSWORD': '1235789Cg',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
-if os.getenv('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -75,6 +59,10 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
+if os.getenv('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
+    
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 AUTH_PASSWORD_VALIDATORS = [
