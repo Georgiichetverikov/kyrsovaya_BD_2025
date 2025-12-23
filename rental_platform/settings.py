@@ -1,5 +1,7 @@
 from pathlib import Path
 from .config import SECRET_KEY, DEBUG, DATABASES
+import dj_database_url
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,14 +49,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rental_platform.wsgi.application'
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'rental_db',
         'USER': 'postgres',
-        'PASSWORD': '1235789Cg',  # ← убрали пробел
+        'PASSWORD': '1235789Cg',
         'HOST': 'localhost',
         'PORT': '5432',
+    }
+}
+
+if os.getenv('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'rental_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '1235789Cg'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 LOGOUT_REDIRECT_URL = '/accounts/login/'
@@ -72,5 +90,6 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
