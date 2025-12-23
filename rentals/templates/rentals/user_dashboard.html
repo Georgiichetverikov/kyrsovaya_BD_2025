@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="rounded-circle bg-secondary d-inline-block"
+                             style="width:80px;height:80px;"></div>
+                    </div>
+                    <h1 class="h4 mb-1">{{ user.username }}</h1>
+                    {% if user.email %}
+                        <p class="text-muted small mb-1">{{ user.email }}</p>
+                    {% endif %}
+                    <p class="text-muted small mb-3">
+                        На платформе с: {{ user.date_joined|date:"d.m.Y" }}
+                    </p>
+                    {% if average_rating %}
+                        <p class="mb-1">
+                            Ваша средняя оценка: <strong>{{ average_rating|floatformat:1 }}</strong> / 5
+                        </p>
+                    {% else %}
+                        <p class="text-muted small mb-1">У вас пока нет оценок.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h2 class="h6 text-muted">Мои вещи</h2>
+                            <p class="display-6 mb-1">{{ my_items_count }}</p>
+                            <a href="{% url 'rentals:my_items' %}" class="btn btn-outline-primary btn-sm">Посмотреть</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h2 class="h6 text-muted">Мои аренды</h2>
+                            <p class="display-6 mb-1">{{ my_rentals_count }}</p>
+                            <a href="{% url 'rentals:my_rentals' %}" class="btn btn-outline-primary btn-sm">Посмотреть</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h2 class="h6 text-muted">Заявки на мои вещи</h2>
+                            <p class="display-6 mb-1">{{ owner_requests_count }}</p>
+                            <a href="{% url 'rentals:owner_requests' %}" class="btn btn-outline-primary btn-sm">Посмотреть</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

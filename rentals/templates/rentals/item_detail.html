@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ item.title }}{% endblock %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h1 class="h3 mb-3">{{ item.title }}</h1>
+                <p class="text-muted">{{ item.description|default:"Описание не указано" }}</p>
+                <dl class="row">
+                    <dt class="col-sm-4">Категория</dt>
+                    <dd class="col-sm-8">{{ item.get_category_display }}</dd>
+                    <dt class="col-sm-4">Цена</dt>
+                    <dd class="col-sm-8">{{ item.daily_price }} ₽ / день</dd>
+                    <dt class="col-sm-4">Владелец</dt>
+                    <dd class="col-sm-8">
+                        <a href="{% url 'rentals:user_profile' item.owner.id %}">
+                            {{ item.owner.username }}
+                        </a>
+                    </dd>
+                </dl>
+                {% if user.is_authenticated and user == item.owner %}
+                    <div class="alert alert-info mt-3 mb-0">
+                        Это ваша вещь. Вы видите её так, как её видят арендаторы.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Арендовать эту вещь</h2>
+                {% if not user.is_authenticated %}
+                    <p>Чтобы оставить заявку на аренду, сначала
+                        <a href="{% url 'login' %}">войдите в систему</a>.
+                    </p>
+                {% elif user == item.owner %}
+                    <p>Вы не можете арендовать свою же вещь.</p>
+                {% else %}
+                    <form method="post" action="{% url 'rentals:create_rental_request' item.id %}">
+                        {% csrf_token %}
+                        {{ rental_form.as_p }}
+                        <button type="submit" class="btn btn-success w-100">Отправить заявку</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

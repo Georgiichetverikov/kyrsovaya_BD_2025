@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Профиль {{ target_user.username }}{% endblock %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="rounded-circle bg-secondary d-inline-block"
+                         style="width:80px;height:80px;"></div>
+                </div>
+                <h1 class="h4 mb-1">{{ target_user.username }}</h1>
+                {% if target_user.email %}
+                    <p class="text-muted small mb-1">{{ target_user.email }}</p>
+                {% endif %}
+                <p class="text-muted small mb-3">
+                    На платформе с: {{ target_user.date_joined|date:"d.m.Y" }}
+                </p>
+                {% if average_rating %}
+                    <p class="mb-1">
+                        <strong>{{ average_rating|floatformat:1 }}</strong> / 5
+                    </p>
+                    <p class="text-muted small mb-2">Средняя оценка</p>
+                {% else %}
+                    <p class="text-muted small mb-2">Пока нет оценок</p>
+                {% endif %}
+
+                {% if user.is_authenticated and user != target_user %}
+                    <a href="{% url 'rentals:user_rating' target_user.id %}" class="btn btn-outline-primary btn-sm mt-2">
+                        Оставить отзыв
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <h2 class="h5 mb-3">Вещи пользователя</h2>
+        {% if user_items %}
+            <div class="row">
+                {% for item in user_items %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-truncate">{{ item.title }}</h5>
+                                <p class="card-text small text-muted">
+                                    {{ item.description|default:"Описание не указано"|truncatechars:100 }}
+                                </p>
+                                <p class="mt-auto mb-1">
+                                    <span class="fw-semibold">{{ item.daily_price }} ₽</span>
+                                    <span class="text-muted">/ день</span>
+                                </p>
+                                <a href="{% url 'rentals:item_detail' item.id %}" class="btn btn-outline-primary btn-sm mt-1">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Пользователь пока не сдаёт вещи в аренду.</p>
+        {% endif %}
+        {% if reviews %}
+            <h2 class="h5 mt-4 mb-3">Отзывы о пользователе</h2>
+            <ul class="list-group shadow-sm">
+                {% for review in reviews %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ review.from_user.username }}</strong>
+                            <span>Оценка: {{ review.rating }} / 5</span>
+                        </div>
+                        {% if review.text %}
+                            <p class="mt-2 mb-1">{{ review.text }}</p>
+                        {% endif %}
+                        <small class="text-muted">Создан: {{ review.created_at }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- ——— ДОБАВЛЕНО: Контактная информация из UserProfile ——— -->
+        {% if profile %}
+            <h2 class="h5 mt-4 mb-3">Контактная информация</h2>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    {% if profile.phone %}
+                        <p><strong>Телефон:</strong> {{ profile.phone }}</p>
+                    {% endif %}
+                    {% if profile.telegram %}
+                        <p><strong>Telegram:</strong> @{{ profile.telegram }}</p>
+                    {% endif %}
+                    {% if profile.about %}
+                        <p><strong>О себе:</strong> {{ profile.about }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

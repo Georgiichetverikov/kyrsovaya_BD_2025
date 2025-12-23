@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}Редактировать вещь{% else %}Добавить вещь{% endif %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <h1 class="h4 mb-3">{% if item %}Редактировать вещь{% else %}Добавить вещь для аренды{% endif %}</h1>
+        <form method="post" class="card card-body shadow-sm">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Название *</label>
+                <input type="text" name="title" class="form-control" value="{{ item.title|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание</label>
+                <textarea name="description" class="form-control" rows="3">{{ item.description|default:'' }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Категория</label>
+                <select name="category" class="form-select">
+                    {% for key, label in item.CATEGORY_CHOICES|default:categories %}
+                        <option value="{{ key }}" {% if item and item.category == key %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Цена в день, ₽ *</label>
+                <input type="number" name="daily_price" class="form-control" value="{{ item.daily_price|default:'' }}" step="0.01" min="0" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" name="is_available" class="form-check-input" id="is_available" {% if not item or item.is_available %}checked{% endif %}>
+                <label class="form-check-label" for="is_available">Доступна для аренды</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-2">
+                {% if item %}Сохранить изменения{% else %}Добавить вещь{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

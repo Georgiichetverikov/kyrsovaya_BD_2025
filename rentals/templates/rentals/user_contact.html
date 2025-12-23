@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Контакты {{ target_user.username }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h1 class="h4 mb-3">Контактная информация: {{ target_user.username }}</h1>
+            <form method="post" class="card card-body shadow-sm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success w-100 mt-2">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

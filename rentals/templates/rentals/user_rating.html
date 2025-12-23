@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Рейтинг {{ target_user.username }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-5 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="h4 mb-3">Рейтинг пользователя {{ target_user.username }}</h1>
+                    {% if average_rating %}
+                        <p class="display-6 mb-0">{{ average_rating|floatformat:1 }}</p>
+                        <p class="text-muted">средняя оценка из 5</p>
+                    {% else %}
+                        <p>У этого пользователя пока нет оценок.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card shadow-sm mt-3">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Ваш отзыв</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.rating.id_for_label }}">
+                                {{ form.rating.label }}
+                            </label>
+                            {{ form.rating }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.text.id_for_label }}">
+                                {{ form.text.label }}
+                            </label>
+                            {{ form.text }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Сохранить отзыв</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <h2 class="h5 mb-3 mt-2 mt-lg-0">Все отзывы</h2>
+            {% if reviews %}
+                <ul class="list-group shadow-sm">
+                    {% for review in reviews %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ review.from_user.username }}</strong>
+                                <span>Оценка: {{ review.rating }} / 5</span>
+                            </div>
+                            {% if review.text %}
+                                <p class="mt-2 mb-1">{{ review.text }}</p>
+                            {% endif %}
+                            <small class="text-muted">Создан: {{ review.created_at }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Отзывов пока нет.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
