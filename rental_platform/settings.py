@@ -1,7 +1,6 @@
 from pathlib import Path
 from .config import SECRET_KEY, DEBUG, DATABASES
 import os
-import os
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
